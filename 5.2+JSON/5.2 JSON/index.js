@@ -17,27 +17,10 @@ app.get("/", (req, res) => {
   res.render("index.ejs");
 });
 
-const Protein = recipe.ingredients.protein.name;
-const prep = recipe.ingredients.protein.preparation;
-const Salsa = recipe.ingredients.salsa.name;
-const Toppings = recipe.ingredients.toppings;
 
 app.post("/recipe", (req, res) => {
-  const type = req.body['choice']
-  if (type === 'chicken') {
-      const recipe = recipeJSON[0];
-    
-      
-  }
-  if (type === 'beef') {
-      const recipe = recipeJSON[1];
-      
-  }
-  if (type === 'fish') {
-      const recipe = recipeJSON[2];
-      
-  }
-  res.render("index.ejs", type);
+  
+  res.render("index.ejs");
   //Step 3: Write your code here to make this behave like the solution website.
   //Step 4: Add code to views/index.ejs to use the recieved recipe object.
 });
