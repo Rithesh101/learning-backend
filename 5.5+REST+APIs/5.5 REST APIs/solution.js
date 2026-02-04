@@ -22,7 +22,7 @@ app.post("/get-secret", async (req, res) => {
   const searchId = req.body.id;
   try {
     const result = await axios.get(API_URL + "/secrets/" + searchId, config);
-    res.render("index.ejs", { content: JSON.stringify(result.data) });
+    res.render("index.ejs", { content: JSON.stringify(result.data, null, 2) });
   } catch (error) {
     res.render("index.ejs", { content: JSON.stringify(error.response.data) });
   }
