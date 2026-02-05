@@ -16,3 +16,6 @@ Thumbs.db
 # Build output (if applicable)
 dist/
 build/
+
+#zip files and folder
+*.zip
