@@ -18,4 +18,4 @@ dist/
 build/
 
 #zip files and folder
-*.zip/
+*.zip
