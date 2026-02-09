@@ -31,13 +31,77 @@ app.get("/filter", (req,res)=>{
 })
 //4. POST a new joke
 
-//5. PUT a joke
+app.post("/jokes", (req,res)=>{
+  const newjoke = {
+    id : jokes.length + 1,
+    jokeText : req.body.text,
+    jokeType : req.body.type
+  }
+  jokes.push(newjoke);
+  res.json(newjoke).status(201);
+})
 
-//6. PATCH a joke
+app.put("jokes/:id", (req,res)=>{
+  const id = parseInt(req.params.id);
+  const data = {
+    id : id,
+    jokeText : req.body.text,
+    jokeType : req.body.type,
+  };
+    const searchIndex = jokes.findIndex((joke) => jokes.id === id);
+    jokes[searchIndex] = data;
+    res.status(201).json(data);
+})
 
-//7. DELETE Specific joke
+app.patch("/jokes/:id", (req,res) => {
+  const id = parseInt(req.params.id);
+  const existingjoke = jokes.find((joke) => jokes.id === id);
+  const updatedJoke = {
+    id : id,
+    jokeText : req.body.text || existingjoke.jokeText,
+    jokeType : req.body.type || existingjoke.jokeType,
+  }
+  const index = jokes.findIndex((joke) => jokes.id === id);
+  jokes[index] = updatedJoke;
+  res.status(200).json(updatedJoke);
 
-//8. DELETE All jokes
+})
+
+app.delete("/jokes/:id", (req,res)=> {
+  const id = parseInt(req.params.id);
+
+  const theindex = jokes.findIndex((joke) => joke.id === id);
+  if (theindex === -1){
+    return res.status(404).send("no match found for the id");
+  }
+  const delJoke = jokes[theindex];
+  jokes.splice(theindex,1);
+  //jokes = jokes.filter(joke => joke.id !== id);
+  res.status(201).json(delJoke);
+  
+})
+
+app.delete("/all", (req,res)=>{
+
+  const userKey = req.query.key;
+  if (userKey === masterKey) {
+    jokes = [];
+    res.sendStatus(200);
+
+  }else{
+    res.status(404).json({error : "you are not authorized to perform this action"});
+  }
+  
+  /*
+  if(userkey !== masterkey){
+  return res.status(401).json({error:you........})}
+  }
+  jokes = [];
+  res.status(200).json(); */
+  
+})
+
+
 
 app.listen(port, () => {
   console.log(`Successfully started server on port ${port}.`);
