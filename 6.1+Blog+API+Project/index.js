@@ -42,13 +42,73 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //CHALLENGE 1: GET All posts
 
+app.get("/posts", (req,res) => {
+
+  res.json(posts);
+  
+})
+
 //CHALLENGE 2: GET a specific post by id
+app.get("/posts/:id", (req,res)=>{
+  const id = parseInt(req.params.id);
+  const specPost = posts.find(post => post.id === id);
+  if (!specPost) return res.status(404).json({message : "post not found"});
+  res.status(200).json(specPost);
+  //also done by posts[id] by making id = id-1;
+})
 
 //CHALLENGE 3: POST a new post
 
+app.post("/posts", (req,res)=>{
+  const newPost = {
+    id : posts.length + 1,
+    title : req.body.title,
+    content : req.body.content,
+    author : req.body.author,
+    date : new Date(), 
+  }
+ //const newid = lastid +=1
+ //lastid = newid;
+  posts.push(newPost);
+  res.status(200).json(newPost);
+})
 //CHALLENGE 4: PATCH a post when you just want to update one parameter
 
+app.patch("", (req,res)=>{
+  const id = parseInt(req.params.id);
+  const existingPost = posts.find(post => post.id === id);
+  const updatedPost = {
+    id : id,
+    title : req.body.title || existingPost.title,
+    content : req.body.content || existingPost.content,
+    author: req.body.author || existingPost.author,
+    date : new Date() || existingPost.date,
+  }
+  //add error handling if not found and do with if like if (req.body.title) post.title = req.body.title;
+  const index = posts.findIndex(post => post.id === id);
+  posts[index] = updatedPost;
+  res.status(200).json(updatedPost);
+})
+
 //CHALLENGE 5: DELETE a specific post by providing the post id.
+
+app.delete("/posts/:id", (req,res)=>{
+  const id = parseInt(req.params.id);
+  const index = posts.findIndex(post => post.id === id);
+
+  if(index === -1){
+    return res.status(404).json({error : "get the hell out of my way"});
+  }
+
+  const deletedPost = posts[index]
+
+  posts.splice(index, 1);
+  // posts = posts.filter(post => post.id !== id)
+  res.status(200).json({deletedpost : deletedPost});
+
+  
+  
+  })
 
 app.listen(port, () => {
   console.log(`API is running at http://localhost:${port}`);
